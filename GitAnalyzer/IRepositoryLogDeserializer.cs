@@ -2,6 +2,6 @@
 {
     public interface IRepositoryLogDeserializer
     {
-        IRepository Deserialize(string logFile);
+        IRepository Deserialize();
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace GitAnalyzer.Models
 {
-    public class User
+    public class Author
     {
-        public User(string name, string email)
+        public Author(string name, string email)
         {
             Name = name;
             Email = email;

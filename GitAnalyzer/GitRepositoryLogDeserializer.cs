@@ -1,20 +1,17 @@
-﻿using System;
-
-namespace GitAnalyzer
+﻿namespace GitAnalyzer
 {
     public class GitRepositoryLogDeserializer : IRepositoryLogDeserializer
     {
-        public IRepository Deserialize(string logFile)
-        {
-            if(string.IsNullOrEmpty(logFile))
-            {
-                throw new ArgumentException($"{nameof(logFile)} cannot be null or empty.");
-            }
+        private readonly IRepositoryLogParser _repositoryLogParser;
 
-            if(!logFile.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
-            {
-                throw new ArgumentException($"{nameof(logFile)} uses wrong file extension.");
-            }
+        public GitRepositoryLogDeserializer(IRepositoryLogParser repositoryLogParser)
+        {
+            _repositoryLogParser = repositoryLogParser;
+        }
+
+        public IRepository Deserialize()
+        {
+            var author = _repositoryLogParser.GetAuthor();
 
             return null;
         }
