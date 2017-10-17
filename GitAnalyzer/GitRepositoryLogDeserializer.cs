@@ -12,7 +12,6 @@
         public IRepository Deserialize()
         {
             var author = _repositoryLogParser.GetAuthor();
-
             return null;
         }
     }
