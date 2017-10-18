@@ -1,9 +1,7 @@
-﻿using GitAnalyzer.Models;
-
-namespace GitAnalyzer
+﻿namespace GitAnalyzer
 {
     public interface IRepositoryLogParser
     {
-        Author GetAuthor();
+        IRepository Parse();
     }
 }

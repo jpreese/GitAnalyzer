@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace GitAnalyzer.Models
 {
-    public class GitRepository
+    public class GitRepository : IRepository
     {
+        public GitRepository(IReadOnlyList<Commit> commits)
+        {
+            Commits = commits;
+        }
+
+        public IReadOnlyList<Commit> Commits { get; private set; }
     }
 }

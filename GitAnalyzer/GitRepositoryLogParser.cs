@@ -1,5 +1,8 @@
 ﻿using GitAnalyzer.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace GitAnalyzer
 {
@@ -24,10 +27,49 @@ namespace GitAnalyzer
             _fileWrapper = fileWrapper;
         }
 
-        public Author GetAuthor()
+        public IRepository Parse()
         {
+            var commits = new List<Commit>();
+
             var logLines = _fileWrapper.ReadAllLines(_logPath);
-            return new Author(logLines[0], "foo@bar.com");
+            foreach(var logLine in logLines)
+            {
+                Author author = null;
+
+                if(logLine.StartsWith("Author"))
+                {
+                    author = ParseAuthor(logLine);
+                }
+
+                var commit = new Commit(null, author);
+                commits.Add(commit);
+            }
+
+            return new GitRepository(commits);
+        }
+
+        private Author ParseAuthor(string logLine)
+        {
+            var authorName = ParseAuthorName(logLine);
+            var authorEmail = ParseAuthorEmail(logLine);
+
+            return new Author(authorName, authorEmail);
+        }
+
+        private string ParseAuthorName(string logLine)
+        {
+            var authorNameRegex = new Regex(@"(?<=\: )(.*?)(?=\ <)");
+            var authorNameResult = authorNameRegex.Matches(logLine).First().ToString();
+
+            return authorNameResult;
+        }
+
+        private string ParseAuthorEmail(string logLine)
+        {
+            var authorEmailRegex = new Regex(@"(?<=\<)(.*?)(?=\>)");
+            var authorEmailResult = authorEmailRegex.Matches(logLine).First().ToString();
+
+            return authorEmailResult;
         }
     }
 }
