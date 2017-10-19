@@ -1,5 +1,7 @@
 ﻿using Moq;
 using System;
+using System.Globalization;
+using System.Linq;
 using Xunit;
 
 namespace GitAnalyzer.Tests
@@ -56,7 +58,7 @@ namespace GitAnalyzer.Tests
 
             var repository = sut.Parse();
 
-            Assert.Equal("Foo Bar", repository.Commits[0].Author.Name);
+            Assert.Equal("Foo Bar", repository.Commits.First().Author.Name);
         }
 
         [Fact]
@@ -73,7 +75,29 @@ namespace GitAnalyzer.Tests
 
             var repository = sut.Parse();
 
-            Assert.Equal("foo@bar.com", repository.Commits[0].Author.Email);
+            Assert.Equal("foo@bar.com", repository.Commits.First().Author.Email);
+        }
+
+        [Fact]
+        public void Parse_DateLine_ReturnsCorrectCommitDate()
+        {
+            var fileWrapper = new Mock<IFileWrapper>();
+            var sut = new GitRepositoryLogParser("foo.txt", fileWrapper.Object);
+
+            const string DateString = "Thu May 4 20:49:19 2017 +0100";
+            var date = new DateTimeOffset();
+            
+            var authorLogLine = new string[]
+            {
+                $"Date:   {DateString}",
+            };
+
+            fileWrapper.Setup(m => m.ReadAllLines(It.IsAny<string>())).Returns(authorLogLine);
+
+            var repository = sut.Parse();
+
+            Assert.Equal(date, repository.Commits.First().Date);
         }
     }
 }
+

@@ -41,7 +41,7 @@ namespace GitAnalyzer
                     author = ParseAuthor(logLine);
                 }
 
-                var commit = new Commit(null, author);
+                var commit = new Commit(author, DateTimeOffset.Now, null);
                 commits.Add(commit);
             }
 
