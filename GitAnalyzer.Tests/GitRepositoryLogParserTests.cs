@@ -28,23 +28,6 @@ namespace GitAnalyzer.Tests
         }
 
         [Fact]
-        public void Parse_SingleCommitLogLine_AddsCommitToCollection()
-        {
-            var fileWrapper = new Mock<IFileWrapper>();
-            var sut = new GitRepositoryLogParser("foo.txt", fileWrapper.Object);
-            var authorLogLine = new string[]
-            {
-                "commit abcde12345abcde12345abcde12345abcde12345",
-            };
-
-            fileWrapper.Setup(m => m.ReadAllLines(It.IsAny<string>())).Returns(authorLogLine);
-
-            var repository = sut.Parse();
-
-            Assert.Equal(1, repository.Commits.Count);
-        }
-
-        [Fact]
         public void Parse_AuthorLine_ReturnsCorrectAuthorName()
         {
             var fileWrapper = new Mock<IFileWrapper>();
