@@ -1,6 +1,7 @@
 ﻿using GitAnalyzer.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -35,13 +36,19 @@ namespace GitAnalyzer
             foreach(var logLine in logLines)
             {
                 Author author = null;
+                DateTimeOffset date;
 
                 if(logLine.StartsWith("Author"))
                 {
                     author = ParseAuthor(logLine);
                 }
 
-                var commit = new Commit(author, DateTimeOffset.Now, null);
+                if(logLine.StartsWith("Date"))
+                {
+                    date = ParseDate(logLine);
+                }
+
+                var commit = new Commit(author, date, null);
                 commits.Add(commit);
             }
 
@@ -70,6 +77,14 @@ namespace GitAnalyzer
             var authorEmailResult = authorEmailRegex.Matches(logLine).First().ToString();
 
             return authorEmailResult;
+        }
+
+        private DateTimeOffset ParseDate(string logLine)
+        {
+            const string DateFormat = "ddd MMM d HH:mm:ss yyyy K";
+            var date = logLine.Split("Date:")[1].Trim();
+
+            return DateTimeOffset.ParseExact(date, DateFormat, CultureInfo.InvariantCulture);
         }
     }
 }

@@ -85,8 +85,8 @@ namespace GitAnalyzer.Tests
             var sut = new GitRepositoryLogParser("foo.txt", fileWrapper.Object);
 
             const string DateString = "Thu May 4 20:49:19 2017 +0100";
-            var date = new DateTimeOffset();
-            
+            var expectedDate = DateTimeOffset.ParseExact(DateString, "ddd MMM d HH:mm:ss yyyy K", CultureInfo.InvariantCulture);
+
             var authorLogLine = new string[]
             {
                 $"Date:   {DateString}",
@@ -96,7 +96,7 @@ namespace GitAnalyzer.Tests
 
             var repository = sut.Parse();
 
-            Assert.Equal(date, repository.Commits.First().Date);
+            Assert.Equal(expectedDate, repository.Commits.First().Date);
         }
     }
 }
