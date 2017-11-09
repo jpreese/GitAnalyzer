@@ -19,6 +19,15 @@ namespace GitAnalyzer.Tests
         }
 
         [Theory]
+        [InlineData("foo.bar")]
+        public void Constructor_InvalidFileExtension_ThrowsArgumentException(string path)
+        {
+            var fileWrapper = new Mock<IFileWrapper>();
+
+            Assert.Throws<ArgumentException>(() => new GitRepositoryLogParser(path, fileWrapper.Object));
+        }
+
+        [Theory]
         [InlineData("foo.txt")]
         [InlineData("foo.TXT")]
         public void Constructor_UpperOrLowercaseTxtExtension_DoesNotThrowException(string path)
