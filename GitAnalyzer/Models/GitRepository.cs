@@ -9,6 +9,6 @@ namespace GitAnalyzer.Models
             Commits = commits;
         }
 
-        public IReadOnlyList<Commit> Commits { get; private set; }
+        public IReadOnlyList<Commit> Commits { get; }
     }
 }

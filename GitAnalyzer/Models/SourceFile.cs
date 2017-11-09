@@ -8,8 +8,8 @@
             Extension = extension;
         }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public string Extension { get; private set; }
+        public string Extension { get; }
     }
 }

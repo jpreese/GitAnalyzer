@@ -12,10 +12,10 @@ namespace GitAnalyzer.Models
             SourceFiles = sourceFiles;
         }
 
-        public Author Author { get; private set; }
+        public Author Author { get; }
 
-        public DateTimeOffset Date { get; private set; }
+        public DateTimeOffset Date { get; }
 
-        public IReadOnlyCollection<SourceFile> SourceFiles { get; private set; }
+        public IReadOnlyCollection<SourceFile> SourceFiles { get; }
     }
 }
